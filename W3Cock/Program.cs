@@ -13,13 +13,17 @@ namespace W3Cock
         static void Main(string[] args)
         {
             var validator = new W3CValidator(new HttpClient(), new Soap12ValidationResponseParser());
-            var validationReport = validator.ValidateDocument(@"<!DOCTYPE html PUBLIC ""-//W3C//DTD XHTML 1.0 Strict//EN"" ""http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd""><html xmlns=""http://www.w3.org/1999/xhtml""><head><title>test</title></head><body><p>hello</p></body></html>");
+            var validationReport = validator.ValidateDocument(@"<!DOCTYPE html PUBLIC ""-//W3C//DTD XHTML 1.0 Strict//EN"" ""http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd""><html xmlns=""http://www.w3.org/1999/xhtml""><head><title>test</title></head><body><p><p>hello</p></p></body></html>");
             if (validationReport.Validity)
             {
                 Console.WriteLine("YAY!");
             }
             else
+            {
                 Console.WriteLine("NAY.");
+                foreach (var e in validationReport.Errors)
+                    Console.WriteLine("{0}:{1} {2}", e.Line, e.Column, e.Message);
+            }
         }
     }
 }
